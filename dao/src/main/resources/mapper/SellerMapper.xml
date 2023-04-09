@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.dao.mapper.SellerMapper">
+
+
+    <select id="selectById" resultType="com.mall.entity.entity.shop.Seller">
+        SELECT *
+        FROM `shop_commodities` sc
+                 LEFT JOIN shop_seller ss ON sc.seller_id = ss.id
+        WHERE sc.id = #{id};
+    </select>
+</mapper>

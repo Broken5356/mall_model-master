@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mall.dao.mapper.UniappCommoditiesMapper">
+    <!--    获取所有商品列表-->
+    <select id="selectAll" resultType="com.mall.entity.entity.shop.UniappCommodities">
+        SELECT *
+        FROM `shop_uniapp_commodities`;
+
+    </select>
+    <!--    根据id查询商品-->
+    <select id="selectCommodityById" resultType="com.mall.entity.entity.shop.UniappCommodities">
+        SELECT *
+        FROM `shop_uniapp_commodities`
+
+        WHERE id = #{id};
+    </select>
+    <!--    根据商品id获取销售商户信息-->
+    <select id="selectCommentDetailByCommodityId" resultType="com.mall.entity.entity.shop.UniappComment">
+        SELECT *
+        FROM `shop_uniapp_comment` suc
+                 LEFT JOIN shop_uniapp_commodities uc ON suc.commodity_id = uc.id
+        WHERE uc.id = #{id};
+    </select>
+
+    <!--    根据商品id 获取商品相关摘片-->
+    <select id="selectCommodityPicture" resultType="java.lang.String">
+        SELECT sup.picture
+        FROM shop_uniapp_picture sup
+                 LEFT JOIN shop_uniapp_commodities suc ON sup.shop_id = suc.id
+        WHERE suc.id = #{id};
+    </select>
+
+    <!--根据商品id 获取用户询问信息-->
+    <select id="selectUserAskById" resultType="com.mall.entity.entity.shop.UniappQuestion">
+        SELECT *
+        FROM `shop_uniapp_question` suq
+                 LEFT JOIN shop_uniapp_commodities suc ON suq.shop_id = suc.id
+        WHERE suc.id = #{id};
+    </select>
+
+    <!--    根据商品id 获取商品对应库存信息-->
+    <select id="selectInventoryById" resultType="com.mall.entity.entity.shop.CommodityInventory">
+        SELECT *
+        FROM shop_commodity_inventory sci
+                 LEFT JOIN shop_uniapp_commodities suc ON sci.commodity_id = suc.id
+        WHERE suc.id = #{id};
+    </select>
+
+    <!--    根据商品类型搜索对应商品(注意模糊查询的用法，这样也可以防止sql注入)-->
+    <select id="selectCommodityByType" resultType="com.mall.entity.entity.shop.UniappCommodities">
+        SELECT *
+        FROM `shop_uniapp_commodities` suc
+        WHERE suc.type like concat('%', '${type}', '%');
+    </select>
+    <!--    根据商品类型搜索对应商品(数量限制10)(注意模糊查询的用法，这样也可以防止sql注入)-->
+    <select id="selectCommodityByTypeLimitedTen" resultType="com.mall.entity.entity.shop.UniappCommodities">
+        SELECT *
+        FROM `shop_uniapp_commodities` suc
+        WHERE suc.type like concat('%', '${type}', '%')
+        limit 10;
+    </select>
+
+</mapper>
